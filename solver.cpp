@@ -19,7 +19,7 @@ ComplexVariable::ComplexVariable(complex<double> a, complex<double> b, complex<d
 double solver::solve(RealVariable r){
     double ans;
     double dis = (r.getB() * r.getB()) - (4 * r.getA() * r.getC());
-    if(dis < 0)
+    if(dis <= 0)
             throw out_of_range{"there is no result"};
     if(r.getA() == 0)
         ans = (-(r.getC())/r.getB());
@@ -53,24 +53,21 @@ RealVariable solver:: operator-(const RealVariable& r, const double a){
 
 RealVariable solver:: operator*(const RealVariable& r, const double a){
    
-    return RealVariable(r.getA()*a, r.getB()*a, r.getC()*a);
+    return RealVariable(r.getA() * a, r.getB() * a, r.getC() * a);
 }
 
 RealVariable solver:: operator^(const RealVariable& r, double a){
-    if(a == 0)return RealVariable(0,0,1);
+    if(a == 0)return RealVariable(0.0,0.0,1.0);
     if(a == 1)return r;
-    if(a == 2)return RealVariable(r.getA() + (r.getB()*r.getB()),0, r.getC());
+    if(a == 2)return RealVariable(1.0, 0.0, 0.0);
     else{throw runtime_error("not more then power 2");}
     
 }
 
 RealVariable solver:: operator/(const RealVariable& r, const double a){
-   if(a == 0) throw runtime_error("you divide by 0");
-   RealVariable x(r.getA(), r.getB(), r.getC());
-   if(r.getA() != 0) x.a = r.getA()/a;
-   if(r.getB() != 0) x.b = r.getB()/a;
-   if(r.getC() != 0) x.c = r.getC()/a;
-    return x;
+   if(a == 0) throw runtime_error("Can't divide by 0");
+   
+    return RealVariable(r.getA() / a, r.getB() / a, r.getC() / a);
 }
 
 RealVariable solver:: operator==(const RealVariable& r, const double a){
@@ -90,7 +87,7 @@ RealVariable solver:: operator-(const RealVariable& r1,const RealVariable& r2){
 
 RealVariable solver:: operator*(const RealVariable& r1,const RealVariable& r2){
     
-    return RealVariable(r1.getA() * r2.getC() + r1.getC() * r2.getA() + r1.getB() * r2.getB(), r1.getB() * r2.getC() + r1.getC() * r2.getB(),r1.getC() * r2.getC());
+    return RealVariable(r1.getA() * r2.getA(), r1.getB() * r2.getB(), r1.getC() * r2.getC());
 }
 
 
@@ -111,7 +108,7 @@ RealVariable solver:: operator+(const double a,const RealVariable& r){
 
 RealVariable solver:: operator-(const double a,const RealVariable& r){
     
-    return RealVariable(-r.getA(), -r.getB(),a - r.getC());
+    return RealVariable(r.getA(), r.getB(),a - r.getC());
 }
 
 RealVariable solver:: operator*(const double a,const RealVariable& r){
@@ -122,7 +119,7 @@ RealVariable solver:: operator*(const double a,const RealVariable& r){
 
 RealVariable solver:: operator/(const double a,const RealVariable& r){
     
-    return RealVariable(r.getA(), a / r.getB(), a / r.getC());
+    return RealVariable(r.getA(),r.getB(), a / r.getC());
 }
 
 RealVariable solver:: operator==(const double a,const RealVariable& r){
